@@ -9,14 +9,15 @@ import org.apache.bcel.generic.*;
 
 public class CFG {
     Set<Node> nodes = new HashSet<Node>();
-    Map<Node, Set<Node>> edges = new HashMap<Node, Set<Node>>();
+    Map<Node, Set<Node>> edgesMap = new HashMap<Node, Set<Node>>();
 
     //For testing project
-    Map<Integer, Set<Integer>> intEdges = new HashMap<>();
+    Map<Integer, Set<Integer>> intEdgesMap = new HashMap<>();
     List<Integer> codeLineNumbersList = new ArrayList<>();
 
 
     List<String> completePaths = new ArrayList<>();
+    List<String> edges = new ArrayList<>();  //len 1, 2 nodes
     List<String> edgePairs = new ArrayList<>(); //len 2, 3 nodes
     List<String> simplePaths = new ArrayList<>();
     List<String> primePaths = new ArrayList<>();
@@ -55,10 +56,10 @@ public class CFG {
 
     private void addNode(Node n) {
         nodes.add(n);
-        Set<Node> nbrs = edges.get(n);
+        Set<Node> nbrs = edgesMap.get(n);
         if (nbrs == null) {
             nbrs = new HashSet<Node>();
-            edges.put(n, nbrs);
+            edgesMap.put(n, nbrs);
         }
     }
 
@@ -66,8 +67,8 @@ public class CFG {
         if(from == to) {
             return;
         }
-        intEdges.putIfAbsent(from, new HashSet<>());
-        intEdges.get(from).add(to);
+        intEdgesMap.putIfAbsent(from, new HashSet<>());
+        intEdgesMap.get(from).add(to);
     }
 
     public void addEdge(int p1, Method m1, JavaClass c1, int p2, Method m2, JavaClass c2) {
@@ -75,15 +76,15 @@ public class CFG {
         Node n2 = new Node(p2, m2, c2);
         addNode(n1);
         addNode(n2);
-        Set<Node> nbrs = edges.get(n1);
+        Set<Node> nbrs = edgesMap.get(n1);
         nbrs.add(n2);
-        edges.put(n1, nbrs);
+        edgesMap.put(n1, nbrs);
     }
     public void addEdge(int p1, int p2, Method m, JavaClass c) {
         addEdge(p1, m, c, p2, m, c);
     }
     public String toString() {
-        return nodes.size() + " nodes\n" + "nodes: " + nodes + '\n' + "edges: " + edges;
+        return nodes.size() + " nodes\n" + "nodes: " + nodes + '\n' + "edges: " + edgesMap;
     }
     public boolean isReachable(String methodFrom, String clazzFrom,
                                String methodTo, String clazzTo) {
@@ -116,7 +117,7 @@ public class CFG {
 
         // find dfs start node
         Node startNode = new Node(firstPosMFrom, mFrom, jcFrom);
-        return helper(edges, startNode, new HashSet<Node>(), clazzTo, methodTo);
+        return helper(edgesMap, startNode, new HashSet<Node>(), clazzTo, methodTo);
     }
 
     public boolean helper(Map<Node, Set<Node>> edges, Node curNode, Set<Node> visited, String clazzTo, String mTo) {
@@ -138,9 +139,9 @@ public class CFG {
 
     public void generateLineNumbersList() {
         Set<Integer> codeLineNumbersSet = new HashSet<>();
-        for(int lineNumber : intEdges.keySet()) {
+        for(int lineNumber : intEdgesMap.keySet()) {
             codeLineNumbersSet.add(lineNumber);
-            codeLineNumbersSet.addAll(intEdges.get(lineNumber));
+            codeLineNumbersSet.addAll(intEdgesMap.get(lineNumber));
         }
         codeLineNumbersList.addAll(codeLineNumbersSet);
         Collections.sort(codeLineNumbersList);
@@ -160,7 +161,7 @@ public class CFG {
         // find firstNode to start
         int firstNode = -1;
         for(int node : codeLineNumbersList) {
-            if(node == -1 || intEdges.get(node).size() == 1 && intEdges.get(node).iterator().next() == -1) {
+            if(node == -1 || intEdgesMap.get(node).size() == 1 && intEdgesMap.get(node).iterator().next() == -1) {
                 continue;
             }
             firstNode = node;
@@ -178,7 +179,7 @@ public class CFG {
                 continue;
             }
 
-            for(int next : intEdges.get(curNode)) {
+            for(int next : intEdgesMap.get(curNode)) {
                 nodes.offer(next);
                 paths.offer(curPath + "," + next);
             }
@@ -191,10 +192,10 @@ public class CFG {
     }
 
     public void generateDifferentEdges() {
-        //  edge pair
-        edgePairs = generateEdgesWithEdgeLen(2);
-        System.out.println("------------------------  edge pair paths  ------------------------");
-        for(String path : edgePairs) {
+        //  edge
+        edges = generateEdgesWithEdgeLen(2);
+        System.out.println("------------------------  edges  ------------------------");
+        for(String path : edges) {
             System.out.println(path);
         }
 

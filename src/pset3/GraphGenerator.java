@@ -2,14 +2,9 @@ package pset3;
 
 import org.apache.bcel.*;
 import org.apache.bcel.classfile.JavaClass;
-import org.apache.bcel.classfile.LineNumber;
 import org.apache.bcel.classfile.LineNumberTable;
 import org.apache.bcel.classfile.Method;
 import org.apache.bcel.generic.*;
-
-import java.io.PrintWriter;
-import java.lang.invoke.MethodHandle;
-import java.util.*;
 
 public class GraphGenerator {
     public CFG createCFG(String className) throws ClassNotFoundException {
@@ -159,8 +154,8 @@ public class GraphGenerator {
         cfg.addIntEdge(4, 5);
         cfg.addIntEdge(4, 8);
         cfg.addIntEdge(8, -1);
-        System.out.println("edge= " + cfg.edges);
-        System.out.println("edge= " + cfg.intEdges);
+        System.out.println("edge= " + cfg.edgesMap);
+        System.out.println("edge= " + cfg.intEdgesMap);
 
         cfg.generateLineNumbersList();
         cfg.generateAllCompletePaths();
