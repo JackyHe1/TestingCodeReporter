@@ -11,15 +11,6 @@ import java.lang.invoke.MethodHandle;
 import java.util.*;
 
 public class GraphGenerator {
-
-    // TR
-    List<String> edges = new ArrayList<>(); // len 1, 2nodes
-    List<String> edgePairs = new ArrayList<>(); //len 2, 3 nodes
-
-    List<String> simplePath = new ArrayList<>();
-    List<String> primePath = new ArrayList<>();
-
-
     public CFG createCFG(String className) throws ClassNotFoundException {
         CFG cfg = new CFG();
         JavaClass jc = Repository.lookupClass(className);
@@ -167,5 +158,9 @@ public class GraphGenerator {
 
         System.out.println("edge= " + cfg.edges);
         System.out.println("edge= " + cfg.intEdges);
+
+        cfg.generateLineNumbersList();
+        cfg.generateAllCompletePaths();
+
     }
 }

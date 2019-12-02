@@ -9,7 +9,14 @@ import org.apache.bcel.generic.*;
 public class CFG {
     Set<Node> nodes = new HashSet<Node>();
     Map<Node, Set<Node>> edges = new HashMap<Node, Set<Node>>();
+
+    //For testing project
     Map<Integer, Set<Integer>> intEdges = new HashMap<>();
+    List<Integer> codeLineNumbersList = new ArrayList<>();
+
+    List<String> edgePairs = new ArrayList<>(); //len 2, 3 nodes
+    List<String> simplePath = new ArrayList<>();
+    List<String> primePath = new ArrayList<>();
 
     public static class Node {
         int position;
@@ -124,6 +131,63 @@ public class CFG {
         }
 
         return false;
+    }
+
+    public void generateLineNumbersList() {
+        Set<Integer> codeLineNumbersSet = new HashSet<>();
+        for(int lineNumber : intEdges.keySet()) {
+            codeLineNumbersSet.add(lineNumber);
+            codeLineNumbersSet.addAll(intEdges.get(lineNumber));
+        }
+        codeLineNumbersList.addAll(codeLineNumbersSet);
+        Collections.sort(codeLineNumbersList);
+
+        System.out.println("------------------------  code number list  ------------------------");
+        System.out.println(codeLineNumbersList.toString());
+    }
+
+    public void generateAllCompletePaths() {
+        if(codeLineNumbersList == null || codeLineNumbersList.size() <= 1) {
+            return;
+        }
+
+        List<String> completePaths = new ArrayList<>();
+
+        Queue<String> paths = new LinkedList<>();
+        Queue<Integer> nodes = new LinkedList<>();
+
+        // find firstNode to start
+        int firstNode = -1;
+        for(int node : codeLineNumbersList) {
+            if(node == -1 || intEdges.get(node).size() == 1 && intEdges.get(node).iterator().next() == -1) {
+                continue;
+            }
+            firstNode = node;
+            break;
+        }
+
+        paths.offer(firstNode + "");
+        nodes.offer(firstNode);
+
+        while(!nodes.isEmpty()) {
+            int curNode = nodes.poll();
+            System.out.println("curNode" + curNode);
+            String curPath = paths.poll();
+            if(curNode == -1) {
+                completePaths.add(curPath);
+                continue;
+            }
+
+            for(int next : intEdges.get(curNode)) {
+                nodes.offer(next);
+                paths.offer(curPath + "," + next);
+            }
+        }
+
+        System.out.println("------------------------  all complete paths  ------------------------");
+        for(String path : completePaths) {
+            System.out.println(path);
+        }
     }
 
 }
