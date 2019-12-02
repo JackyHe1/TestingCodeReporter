@@ -17,8 +17,8 @@ public class CFG {
 
     List<String> completePaths = new ArrayList<>();
     List<String> edgePairs = new ArrayList<>(); //len 2, 3 nodes
-    List<String> simplePath = new ArrayList<>();
-    List<String> primePath = new ArrayList<>();
+    List<String> simplePaths = new ArrayList<>();
+    List<String> primePaths = new ArrayList<>();
 
     public static class Node {
         int position;
@@ -205,11 +205,11 @@ public class CFG {
         }
 
         for(int len = 2; len <= maxPathLen; len++) {
-            simplePath.addAll(generateEdgesWithEdgeLen(len));
+            simplePaths.addAll(generateEdgesWithEdgeLen(len));
         }
 
         System.out.println("------------------------  simple paths  ------------------------");
-        for(String path : simplePath) {
+        for(String path : simplePaths) {
             System.out.println(path);
         }
     }
