@@ -150,6 +150,23 @@ public class CFG {
         System.out.println(codeLineNumbersList.toString());
     }
 
+    public List<String> convertIntListToStringListAndRemoveLastOne() {
+        String nodes = "";
+        for(int node : codeLineNumbersList) {
+            if(node != -1) {
+                nodes += "," + node;
+            }
+        }
+        nodes = nodes.substring(1);
+
+        System.out.println("------------------------  nodes  ------------------------");
+        System.out.println(nodes);
+
+        List<String> ret = new ArrayList<>();
+        ret.add(nodes);
+        return ret;
+    }
+
     public void generateAllCompletePaths() {
         if(codeLineNumbersList == null || codeLineNumbersList.size() <= 1) {
             return;
@@ -261,6 +278,7 @@ public class CFG {
     }
 
     public void writeAllPathsToFiles() {
+        writePathsToFile(convertIntListToStringListAndRemoveLastOne(), "nodes.txt");
         writePathsToFile(edges, "edges.txt");
         writePathsToFile(edgePairs, "edgePairs.txt");
         writePathsToFile(simplePaths, "simplePaths.txt");
