@@ -11,6 +11,15 @@ import java.lang.invoke.MethodHandle;
 import java.util.*;
 
 public class GraphGenerator {
+
+    // TR
+    List<String> edges = new ArrayList<>(); // len 1, 2nodes
+    List<String> edgePairs = new ArrayList<>(); //len 2, 3 nodes
+
+    List<String> simplePath = new ArrayList<>();
+    List<String> primePath = new ArrayList<>();
+
+
     public CFG createCFG(String className) throws ClassNotFoundException {
         CFG cfg = new CFG();
         JavaClass jc = Repository.lookupClass(className);
@@ -19,12 +28,14 @@ public class GraphGenerator {
 
         int exitPos = -1;
         for (Method m : cg.getMethods()) {
+            LineNumberTable lineNumberTable = m.getLineNumberTable();
             MethodGen mg = new MethodGen(m, cg.getClassName(), cpg);
             InstructionList il = mg.getInstructionList();
             InstructionHandle[] handles = il.getInstructionHandles();
 
             for(InstructionHandle ih : handles) {
                 int position = ih.getPosition();
+                int sourcePosition = lineNumberTable.getSourceLine(position);
 
                 cfg.addNode(position, m, jc);
                 Instruction inst = ih.getInstruction();
@@ -36,16 +47,22 @@ public class GraphGenerator {
 
                 if(inst instanceof ReturnInstruction) {
                     cfg.addEdge(position, exitPos, m, jc);  //-1 is exitPos
+
+                    cfg.addIntEdge(sourcePosition, exitPos);
                 }
                 else if (inst instanceof BranchInstruction) {
                     cfg.addEdge(position, nextIH.getPosition(), m, jc);
                     cfg.addEdge(position, ((BranchInstruction) inst).getTarget().getPosition(), m, jc);
+                    cfg.addIntEdge(sourcePosition, lineNumberTable.getSourceLine(nextIH.getPosition()));
+                    cfg.addIntEdge(sourcePosition, lineNumberTable.getSourceLine(((BranchInstruction) inst).getTarget().getPosition()));
                 }
                 else if(inst instanceof GotoInstruction) {
                     cfg.addEdge(position, ((BranchInstruction) inst).getTarget().getPosition(), m, jc);
+                    cfg.addIntEdge(sourcePosition, lineNumberTable.getSourceLine(((BranchInstruction) inst).getTarget().getPosition()));
                 }
                 else {
                     cfg.addEdge(position, nextIH.getPosition(), m, jc);
+                    cfg.addIntEdge(sourcePosition, lineNumberTable.getSourceLine(nextIH.getPosition()));
                 }
             }
         }
