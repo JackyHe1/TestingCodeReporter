@@ -14,6 +14,8 @@ public class CFG {
     Map<Integer, Set<Integer>> intEdges = new HashMap<>();
     List<Integer> codeLineNumbersList = new ArrayList<>();
 
+
+    List<String> completePaths = new ArrayList<>();
     List<String> edgePairs = new ArrayList<>(); //len 2, 3 nodes
     List<String> simplePath = new ArrayList<>();
     List<String> primePath = new ArrayList<>();
@@ -151,8 +153,6 @@ public class CFG {
             return;
         }
 
-        List<String> completePaths = new ArrayList<>();
-
         Queue<String> paths = new LinkedList<>();
         Queue<Integer> nodes = new LinkedList<>();
 
@@ -171,7 +171,6 @@ public class CFG {
 
         while(!nodes.isEmpty()) {
             int curNode = nodes.poll();
-            System.out.println("curNode" + curNode);
             String curPath = paths.poll();
             if(curNode == -1) {
                 completePaths.add(curPath);
@@ -190,4 +189,42 @@ public class CFG {
         }
     }
 
+
+    public void generateDifferentEdges() {
+        //  edge pair
+        edgePairs = generateEdgesWithEdgeLen(2);
+        System.out.println("------------------------  edge pair paths  ------------------------");
+        for(String path : edgePairs) {
+            System.out.println(path);
+        }
+
+        // simple paths
+        int maxPathLen = 0;
+        for(String completePath : completePaths) {
+            maxPathLen = Math.max(maxPathLen, completePath.length());
+        }
+
+        for(int len = 2; len <= maxPathLen; len++) {
+            simplePath.addAll(generateEdgesWithEdgeLen(len));
+        }
+
+        System.out.println("------------------------  simple paths  ------------------------");
+        for(String path : simplePath) {
+            System.out.println(path);
+        }
+    }
+
+    public List<String> generateEdgesWithEdgeLen(int edgeLen) {
+        List<String> paths = new ArrayList<>();
+        Set<String> pathSet = new HashSet<>();
+        for(String completePath : completePaths) {
+            for(int i = 0; i + 2 * edgeLen - 1 <= completePath.length() - 3; i += 2) { //last one is -1, jump
+                String path = completePath.substring(i, i + 2 * edgeLen - 1);
+                if(pathSet.add(path)) {
+                    paths.add(path);
+                }
+            }
+        }
+        return  paths;
+    }
 }

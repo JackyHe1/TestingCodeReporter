@@ -155,12 +155,14 @@ public class GraphGenerator {
         CFG cfg = gg.createCFG("pset3.C"); // example invocation of createCFG
 
         //EdgeReporter edgeReporter = new EdgeReporter(cfg.edges);
-
+        cfg.addIntEdge(4, 5);
+        cfg.addIntEdge(4, 8);
+        cfg.addIntEdge(8, -1);
         System.out.println("edge= " + cfg.edges);
         System.out.println("edge= " + cfg.intEdges);
 
         cfg.generateLineNumbersList();
         cfg.generateAllCompletePaths();
-
+        cfg.generateDifferentEdges();
     }
 }
