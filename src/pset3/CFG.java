@@ -199,6 +199,13 @@ public class CFG {
             System.out.println(path);
         }
 
+        //  edge pairs
+        edgePairs = generateEdgesWithEdgeLen(3);
+        System.out.println("------------------------  edges pairs  ------------------------");
+        for(String path : edgePairs) {
+            System.out.println(path);
+        }
+
         // simple paths
         int maxPathLen = 0;
         for(String completePath : completePaths) {
@@ -254,6 +261,7 @@ public class CFG {
     }
 
     public void writeAllPathsToFiles() {
+        writePathsToFile(edges, "edges.txt");
         writePathsToFile(edgePairs, "edgePairs.txt");
         writePathsToFile(simplePaths, "simplePaths.txt");
         writePathsToFile(primePaths, "primePaths.txt");
