@@ -7,6 +7,7 @@ import org.apache.bcel.classfile.LineNumberTable;
 import org.apache.bcel.classfile.Method;
 import org.apache.bcel.generic.*;
 
+import java.io.PrintWriter;
 import java.lang.invoke.MethodHandle;
 import java.util.*;
 
@@ -164,5 +165,8 @@ public class GraphGenerator {
         cfg.generateLineNumbersList();
         cfg.generateAllCompletePaths();
         cfg.generateDifferentEdges();
+
+        // output to files
+        cfg.writeAllPathsToFiles();
     }
 }

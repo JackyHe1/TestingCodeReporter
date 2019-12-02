@@ -1,4 +1,5 @@
 package pset3;
+import java.io.PrintWriter;
 import java.util.*;
 
 import org.apache.bcel.Repository;
@@ -249,5 +250,23 @@ public class CFG {
             }
         }
         return primePaths;
+    }
+
+    public void writeAllPathsToFiles() {
+        writePathsToFile(edgePairs, "edgePairs.txt");
+        writePathsToFile(simplePaths, "simplePaths.txt");
+        writePathsToFile(primePaths, "primePaths.txt");
+        writePathsToFile(completePaths, "completePaths.txt");
+    }
+
+    public void writePathsToFile(List<String> paths, String filename) {
+        try (PrintWriter out = new PrintWriter(filename)) {
+            for(String path : paths) {
+                out.println(path);
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e.getStackTrace());
+        }
     }
 }
