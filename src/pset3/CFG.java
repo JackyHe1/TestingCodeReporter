@@ -189,7 +189,6 @@ public class CFG {
         }
     }
 
-
     public void generateDifferentEdges() {
         //  edge pair
         edgePairs = generateEdgesWithEdgeLen(2);
@@ -212,6 +211,13 @@ public class CFG {
         for(String path : simplePaths) {
             System.out.println(path);
         }
+
+        // prime paths
+        primePaths = generatePrimePaths();
+        System.out.println("------------------------  prime paths  ------------------------");
+        for(String path : primePaths) {
+            System.out.println(path);
+        }
     }
 
     public List<String> generateEdgesWithEdgeLen(int edgeLen) {
@@ -226,5 +232,22 @@ public class CFG {
             }
         }
         return  paths;
+    }
+
+    public List<String> generatePrimePaths() {
+        List<String> primePaths = new ArrayList<>();
+        for(String simplePath : simplePaths) {
+            boolean notSubPathOfOtherPaths = true;
+            for(String simplePathComp : simplePaths) {
+                if(simplePath.length() < simplePathComp.length() && simplePathComp.indexOf(simplePath) != -1) {
+                    notSubPathOfOtherPaths = false;
+                    break;
+                }
+            }
+            if(notSubPathOfOtherPaths) {
+                primePaths.add(simplePath);
+            }
+        }
+        return primePaths;
     }
 }
