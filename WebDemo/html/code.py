@@ -9,6 +9,27 @@ TEMPLATE = """
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <script>
+      window.onload = function(){{
+         var obj_lis = document.querySelectorAll('.pathUL li');
+         for(i=0;i<obj_lis.length;i++){{
+             obj_lis[i].onclick = function(){{
+                 var path = this.innerHTML;
+                 clickPath(path);
+             }}
+         }}
+      }}
+      function clickPath(path){{
+         var lis = document.querySelectorAll('.codeUL li');
+         for(var i = 0; i < lis.length; i++) {{
+             lis[i].className = 'list-group-item borderless border-0';
+         }}
+
+         var linesArray = path.split(',').map(Number)
+         for(var i = 0; i < linesArray.length; i++) {{
+             lis[linesArray[i] - 1].className = 'list-group-item list-group-item-success border-0';
+         }}
+      }}
+
     function nodeFunction() {{
       document.getElementById("nodes").style.display = "block";
       document.getElementById("edges").style.display = "none";
@@ -66,7 +87,7 @@ TEMPLATE = """
   <div class="container">
   <div class="row">
   <div class="col-sm border">
-  <ul class="list-group">
+  <ul class="list-group codeUL">
   {}
   </ul>
   </div>
@@ -90,19 +111,19 @@ TEMPLATE = """
   </li>
 </ul>
 
-  <ul id="nodes" class="list-group overlay" style="">
+  <ul id="nodes" class="list-group overlay pathUL" style="">
     {}
   </ul>
-  <ul id="edges" class="list-group overlay" style="display=none;">
+  <ul id="edges" class="list-group overlay pathUL" style="display=none;">
     {}
   </ul>
-  <ul id="edgePairs" class="list-group overlay" style="display=none;">
+  <ul id="edgePairs" class="list-group overlay pathUL" style="display=none;">
     {}
   </ul>
-  <ul id="simplePaths" class="list-group overlay" style="display=none;">
+  <ul id="simplePaths" class="list-group overlay pathUL" style="display=none;">
     {}
   </ul>
-  <ul id="primePaths" class="list-group overlay" style="display=none;">
+  <ul id="primePaths" class="list-group overlay pathUL" style="display=none;">
     {}
   </ul>
 
