@@ -15,7 +15,7 @@ public class CFG {
     Map<Integer, Set<Integer>> intEdgesMap = new HashMap<>();
     List<Integer> codeLineNumbersList = new ArrayList<>();
 
-
+    boolean noCompletePaths = false;
     List<String> completePaths = new ArrayList<>();
     List<String> edges = new ArrayList<>();  //len 1, 2 nodes
     List<String> edgePairs = new ArrayList<>(); //len 2, 3 nodes
@@ -174,6 +174,7 @@ public class CFG {
 
         Queue<String> paths = new LinkedList<>();
         Queue<Integer> nodes = new LinkedList<>();
+        Map<Integer, Integer> countMap = new HashMap<>();
 
         // find firstNode to start
         int firstNode = -1;
@@ -187,6 +188,7 @@ public class CFG {
 
         paths.offer(firstNode + "");
         nodes.offer(firstNode);
+        countMap.put(firstNode, 1);
 
         while(!nodes.isEmpty()) {
             int curNode = nodes.poll();
@@ -197,14 +199,22 @@ public class CFG {
             }
 
             for(int next : intEdgesMap.get(curNode)) {
+                countMap.put(next, countMap.getOrDefault(next, 0) + 1);
+                if(countMap.get(next) == 3) {  //handle for loop, we can have 4,6 or 454, but not 45454 in complete path to generate other paths
+                    noCompletePaths = true;
+                    continue;
+                }
+
                 nodes.offer(next);
                 paths.offer(curPath + "," + next);
             }
         }
 
         System.out.println("------------------------  all complete paths  ------------------------");
-        for(String path : completePaths) {
-            System.out.println(path);
+        if(!noCompletePaths) {
+            for (String path : completePaths) {
+                System.out.println(path);
+            }
         }
     }
 
@@ -290,7 +300,7 @@ public class CFG {
         writePathsToFile(edgePairs, "edgePairs.txt");
         writePathsToFile(simplePaths, "simplePaths.txt");
         writePathsToFile(primePaths, "primePaths.txt");
-        writePathsToFile(completePaths, "completePaths.txt");
+        writePathsToFile(noCompletePaths ? new ArrayList<>() : completePaths, "completePaths.txt");
     }
 
     public void writePathsToFile(List<String> paths, String filename) {
