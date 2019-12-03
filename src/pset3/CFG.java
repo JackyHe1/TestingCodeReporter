@@ -192,7 +192,7 @@ public class CFG {
             int curNode = nodes.poll();
             String curPath = paths.poll();
             if(curNode == -1) {
-                completePaths.add(curPath);
+                completePaths.add(curPath.substring(0, curPath.length() - 3));
                 continue;
             }
 
@@ -210,14 +210,14 @@ public class CFG {
 
     public void generateDifferentEdges() {
         //  edge
-        edges = generateEdgesWithEdgeLen(2);
+        edges = generateEdgesWithEdgeLen(1);
         System.out.println("------------------------  edges  ------------------------");
         for(String path : edges) {
             System.out.println(path);
         }
 
         //  edge pairs
-        edgePairs = generateEdgesWithEdgeLen(3);
+        edgePairs = generateEdgesWithEdgeLen(2);
         System.out.println("------------------------  edges pairs  ------------------------");
         for(String path : edgePairs) {
             System.out.println(path);
@@ -250,10 +250,17 @@ public class CFG {
         List<String> paths = new ArrayList<>();
         Set<String> pathSet = new HashSet<>();
         for(String completePath : completePaths) {
-            for(int i = 0; i + 2 * edgeLen - 1 <= completePath.length() - 3; i += 2) { //last one is -1, jump
-                String path = completePath.substring(i, i + 2 * edgeLen - 1);
+            String[] nums = completePath.split(",");
+            for(int i = 0; i < nums.length - edgeLen; i ++) { //last one is -1, jump
+                String path = "";
+                int count = edgeLen + 1;
+                int idx = i;
+                while(count > 0) {
+                    path += nums[idx++] + ",";
+                    count--;
+                }
                 if(pathSet.add(path)) {
-                    paths.add(path);
+                    paths.add(path.substring(0, path.length() - 1));
                 }
             }
         }
