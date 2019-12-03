@@ -8,13 +8,32 @@ TEMPLATE = """
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script>
+    function edgeFunction() {{
+      var edges = document.getElementById("edges");
+      edges.style.display = "block";
+      var paths = document.getElementById("paths");
+      paths.style.display = "none";
+    }}
+    function pathFunction() {{
+      var edges = document.getElementById("edges");
+      edges.style.display = "none";
+      var paths = document.getElementById("paths");
+      paths.style.display = "block";
+    }}
+  </script>
 
 </head>
 <style>
-    li {{ 
-	    font-family: Lucida Console,Lucida Sans Typewriter,monaco,Bitstream Vera Sans Mono,monospace; 
+    li {{
+	    font-family: Lucida Console,Lucida Sans Typewriter,monaco,Bitstream Vera Sans Mono,monospace;
       padding-top: 0.25rem;
       padding-bottom: 0.25rem;
+    }}
+    .overlay {{
+      position: absolute;
+      width: 100%;
+
     }}
 </style>
 <body>
@@ -32,25 +51,37 @@ TEMPLATE = """
   <div class="col-sm">
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link" href="#">Active</a>
+    <a class="nav-link" onclick="pathFunction()" href="#">Node</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">Link</a>
+    <a class="nav-link" onclick="edgeFunction()" href="#">Edge</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">Link</a>
+    <a class="nav-link" onclick="pathFunction()" href="#">EdgePair</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+    <a class="nav-link" onclick="pathFunction()" href="#">SimplePath</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" onclick="pathFunction()" href="#">PrimePath</a>
   </li>
 </ul>
-  <ul class="list-group">
+
+  <ul id="edges" class="list-group overlay" style="">
     {}
     <li class="list-group-item list-group-item-success">First item</li>
     <li class="list-group-item list-group-item-info">Second item</li>
     <li class="list-group-item list-group-item-warning">Third item</li>
     <li class="list-group-item list-group-item-danger">Fourth item</li>
   </ul>
+  <ul id="paths" class="list-group overlay" style="display=block;">
+
+    <li class="list-group-item list-group-item-success">First item</li>
+    <li class="list-group-item list-group-item-info">Second item</li>
+    <li class="list-group-item list-group-item-warning">Third item</li>
+    <li class="list-group-item list-group-item-danger">Fourth item</li>
+  </ul>
+
   </div>
 
   </div>
