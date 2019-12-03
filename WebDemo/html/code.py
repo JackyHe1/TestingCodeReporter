@@ -9,17 +9,40 @@ TEMPLATE = """
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <script>
-    function edgeFunction() {{
-      var edges = document.getElementById("edges");
-      edges.style.display = "block";
-      var paths = document.getElementById("paths");
-      paths.style.display = "none";
+    function nodeFunction() {{
+      document.getElementById("nodes").style.display = "block";
+      document.getElementById("edges").style.display = "none";
+      document.getElementById("edgePairs").style.display = "none";
+      document.getElementById("simplePaths").style.display = "none";
+      document.getElementById("primePaths").style.display = "none";
     }}
-    function pathFunction() {{
-      var edges = document.getElementById("edges");
-      edges.style.display = "none";
-      var paths = document.getElementById("paths");
-      paths.style.display = "block";
+    function edgeFunction() {{
+      document.getElementById("nodes").style.display = "none";
+      document.getElementById("edges").style.display = "block";
+      document.getElementById("edgePairs").style.display = "none";
+      document.getElementById("simplePaths").style.display = "none";
+      document.getElementById("primePaths").style.display = "none";
+    }}
+    function edgePairFunction() {{
+      document.getElementById("nodes").style.display = "none";
+      document.getElementById("edges").style.display = "none";
+      document.getElementById("edgePairs").style.display = "block";
+      document.getElementById("simplePaths").style.display = "none";
+      document.getElementById("primePaths").style.display = "none";
+    }}
+    function simplePathFunction() {{
+      document.getElementById("nodes").style.display = "none";
+      document.getElementById("edges").style.display = "none";
+      document.getElementById("edgePairs").style.display = "none";
+      document.getElementById("simplePaths").style.display = "block";
+      document.getElementById("primePaths").style.display = "none";
+    }}
+    function primePathFunction() {{
+      document.getElementById("nodes").style.display = "none";
+      document.getElementById("edges").style.display = "none";
+      document.getElementById("edgePairs").style.display = "none";
+      document.getElementById("simplePaths").style.display = "none";
+      document.getElementById("primePaths").style.display = "block";
     }}
   </script>
 
@@ -51,35 +74,36 @@ TEMPLATE = """
   <div class="col-sm">
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link" onclick="pathFunction()" href="#">Node</a>
+    <a class="nav-link" onclick="nodeFunction()" href="#">Node</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" onclick="edgeFunction()" href="#">Edge</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" onclick="pathFunction()" href="#">EdgePair</a>
+    <a class="nav-link" onclick="edgePairFunction()" href="#">EdgePair</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" onclick="pathFunction()" href="#">SimplePath</a>
+    <a class="nav-link" onclick="simplePathFunction()" href="#">SimplePath</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" onclick="pathFunction()" href="#">PrimePath</a>
+    <a class="nav-link" onclick="primePathFunction()" href="#">PrimePath</a>
   </li>
 </ul>
 
-  <ul id="edges" class="list-group overlay" style="">
+  <ul id="nodes" class="list-group overlay" style="">
     {}
-    <li class="list-group-item list-group-item-success">First item</li>
-    <li class="list-group-item list-group-item-info">Second item</li>
-    <li class="list-group-item list-group-item-warning">Third item</li>
-    <li class="list-group-item list-group-item-danger">Fourth item</li>
   </ul>
-  <ul id="paths" class="list-group overlay" style="display=block;">
-
-    <li class="list-group-item list-group-item-success">First item</li>
-    <li class="list-group-item list-group-item-info">Second item</li>
-    <li class="list-group-item list-group-item-warning">Third item</li>
-    <li class="list-group-item list-group-item-danger">Fourth item</li>
+  <ul id="edges" class="list-group overlay" style="display=none;">
+    {}
+  </ul>
+  <ul id="edgePairs" class="list-group overlay" style="display=none;">
+    {}
+  </ul>
+  <ul id="simplePaths" class="list-group overlay" style="display=none;">
+    {}
+  </ul>
+  <ul id="primePaths" class="list-group overlay" style="display=none;">
+    {}
   </ul>
 
   </div>
@@ -92,9 +116,21 @@ TEMPLATE = """
 </html>
 """
 
+def generate(filename):
+    with open(filename + '.txt') as f:
+        lines = f.readlines() 
+    code = []
+    for i, line in enumerate(lines):
+        # l = '<li class="list-group-item" style="padding-left:{}em">'
+        l = '<li class="list-group-item list-group-item-warning">'
+        l = l.format(len(line) - len(line.strip()), i + 1)
+        l += line[:-1]
+        l += '</li>'
+        code.append(l)
+    return '\n'.join(code)
 
 
-def generate_html(lines, edges):
+def generate_html(lines):
     code = []
     for i, line in enumerate(lines):
         # l = '<li class="list-group-item" style="padding-left:{}em">'
@@ -104,23 +140,13 @@ def generate_html(lines, edges):
         l += '</li>'
         code.append(l)
 
-    edge_code = []
-    for edge in edges:
-        l = '<li class="list-group-item list-group-item-warning">'
-        l += edge.strip()
-        l += '</li>'
-        edge_code.append(l)
-
-    return TEMPLATE.format('\n'.join(code), '\n'.join(edge_code))
+    return TEMPLATE.format('\n'.join(code), generate('nodes'), generate('edges'), generate('edgePairs'), generate('simplePaths'), generate('primePaths'))
 
 
 with open('Demo.java') as f:
     lines = f.readlines()
 
-with open('edges.txt') as f:
-    edges = f.readlines()
-
-html = generate_html(lines, edges)
+html = generate_html(lines)
 
 with open('code.html', 'w') as f:
     f.write(html)
