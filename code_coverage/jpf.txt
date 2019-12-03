@@ -1,0 +1,36 @@
+
+Implement code coverage tools by utilizing Java Pathfinder (JPF), as
+well as a memoization framework.
+
+
+***Code Coverage***
+
+Implement a code coverage tool using the Listener mechanism available
+in JPF.  Each coverage report should be a plain txt and it should
+include files and lines that are covered; the lines in the report
+should be sorted (first based on the class name and then based on the
+line numbers).
+
+
+***Memoization framework***
+
+Memoization captures the results of methods and returns those results
+if the method is invoked with same arguments (in the same program
+state).  Your task is to implement a memoization framework that
+captures the result of any method (static and instance) that returns a
+primitive type.  To check if the result can be reused, you will have
+to traverse heap starting from both "this" and all the arguments give
+to the method.  We will assume that static fields are not used.
+
+
+***Submission Instructions***
+
+See syllabus.
+
+
+***Important***
+
+Be creative.  When something is unclear make a reasonable assumption.
+
+Also, do not try to cover everything at once; start with small
+examples and then expand from there.
