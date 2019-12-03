@@ -6,6 +6,7 @@ TEMPLATE = """
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
 </head>
@@ -22,13 +23,27 @@ TEMPLATE = """
   <h2>List Group With Contextual Classes</h2>
   <div class="container">
   <div class="row">
-  <div class="col-sm">
+  <div class="col-sm border">
   <ul class="list-group">
   {}
   </ul>
   </div>
 
   <div class="col-sm">
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link" href="#">Active</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Link</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Link</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+  </li>
+</ul>
   <ul class="list-group">
     {}
     <li class="list-group-item list-group-item-success">First item</li>
