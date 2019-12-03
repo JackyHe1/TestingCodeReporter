@@ -145,6 +145,8 @@ public class CFG {
         }
         codeLineNumbersList.addAll(codeLineNumbersSet);
         Collections.sort(codeLineNumbersList);
+        codeLineNumbersList.remove(0);  //remove -1
+        codeLineNumbersList.remove(0);  //remove node which call class init
 
         System.out.println("------------------------  code number list  ------------------------");
         System.out.println(codeLineNumbersList.toString());
@@ -153,9 +155,7 @@ public class CFG {
     public List<String> convertIntListToStringListAndRemoveLastOne() {
         String nodes = "";
         for(int node : codeLineNumbersList) {
-            if(node != -1) {
-                nodes += "," + node;
-            }
+            nodes += "," + node;
         }
         nodes = nodes.substring(1);
 
