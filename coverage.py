@@ -21,11 +21,9 @@ def convert_coverage(filename):
     
     for line in lines:
         if is_covered(line, path):
-            print(line)
             coverage.append(','.join(line) + '\n')
 
     with open('out/{}_coverage.txt'.format(filename), 'w') as f:
-        print(coverage)
         f.writelines(coverage)
 
 convert_coverage('nodes')

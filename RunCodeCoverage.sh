@@ -11,3 +11,6 @@ cd ../../.
 ./bin/jpf +classpath=src/examples/. +listener=gov.nasa.jpf.CoverageListener Bootstrap
 
 cd ../../.
+
+python coverage.py
+python generate_html.py

@@ -13,4 +13,8 @@ public class Demo {
             return a;
         }
     }
+
+    public static void main(String argv[]) {
+        max(1, 3);
+    }
 }
