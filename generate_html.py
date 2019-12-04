@@ -12,7 +12,7 @@ TEMPLATE = """
       window.onload = function(){{
          var obj_lis = document.querySelectorAll('.pathUL li');
          for(i=0;i<obj_lis.length;i++){{
-             obj_lis[i].onclick = function(){{
+             obj_lis[i].onmouseover = function(){{
                  var path = this.innerHTML;
                  clickPath(path);
              }}
