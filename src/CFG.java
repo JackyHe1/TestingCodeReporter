@@ -152,18 +152,16 @@ public class CFG {
     }
 
     public List<String> convertIntListToStringListAndRemoveLastOne() {
-        String nodes = "";
+        List<String> nodes = new ArrayList<>();
         for(int node : codeLineNumbersList) {
-            nodes += "," + node;
+            nodes.add(node + "");
         }
-        nodes = nodes.substring(1);
 
         System.out.println("------------------------  nodes  ------------------------");
-        System.out.println(nodes);
-
-        List<String> ret = new ArrayList<>();
-        ret.add(nodes);
-        return ret;
+        for(String node : nodes) {
+            System.out.println(node);
+        }
+        return nodes;
     }
 
     public void generateAllCompletePaths() {
@@ -237,7 +235,7 @@ public class CFG {
             maxPathLen = Math.max(maxPathLen, completePath.length());
         }
 
-        for(int len = 2; len <= maxPathLen; len++) {
+        for(int len = 1; len <= maxPathLen; len++) {
             simplePaths.addAll(generateEdgesWithEdgeLen(len));
         }
 
