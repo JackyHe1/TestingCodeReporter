@@ -109,7 +109,7 @@ public class CoverageListener extends ListenerAdapter {
         String path = Arrays.stream(nums.toArray())
             .map(String::valueOf)
             .collect(Collectors.joining(","));
-        try (PrintWriter out = new PrintWriter("testPath.txt")) {
+        try (PrintWriter out = new PrintWriter("../../out/testPath.txt")) {
             out.println(path);
         }
         catch (Exception e) {
