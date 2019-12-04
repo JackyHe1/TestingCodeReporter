@@ -1,17 +1,16 @@
-class Demo {
-    public static void main(String argv[]) {
-        int a;
-        double b;
-        String s;
-        a = 19;
-        b = 23.3;
-        s = "prefect";
-        SampleVariable v = new SampleVariable(91, 89.1);
-        System.out.printf("Hello world: %d!\n", Add.add(a, b, s, v));
-        System.out.printf("Hello world: %d!\n", Add.add(a, b, s, v));
-        v.a = 92;
-        System.out.printf("Hello world: %d!\n", Add.add(a, b, s, v));
-        v.a = 91;
-        System.out.printf("Hello world: %d!\n", Add.add(a, b, s, v));
+public class Demo {
+    static int max(int x, int y) {
+        int a = 1;
+        int b = 2;
+
+        if(x > 2) {
+            a += b;
+        }
+
+        if (x < y) {
+            return y;
+        } else {
+            return a;
+        }
     }
 }

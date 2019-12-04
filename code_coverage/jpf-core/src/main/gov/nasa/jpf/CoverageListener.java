@@ -19,7 +19,9 @@ package gov.nasa.jpf;
 
 import gov.nasa.jpf.vm.*;
 
+import java.io.PrintWriter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * this is just a common root type for VMListeners and SearchListeners. No
@@ -66,6 +68,7 @@ public class CoverageListener extends ListenerAdapter {
         if (mi.getClassName().startsWith("java.") ||
                 mi.getClassName().startsWith("gov.") ||
                 mi.getClassName().startsWith("sun.") ||
+                mi.getClassName().startsWith("Bootstrap") ||
                 instructionToExecute.getLineNumber() <= 0){
             return;
         }
@@ -92,13 +95,25 @@ public class CoverageListener extends ListenerAdapter {
             List<Line> lines = new ArrayList<>(v);
             Collections.sort(lines, Comparator.comparing((line -> line.lineNum)));
             for (Line line: lines) {
-//                System.out.printf("%-5d: %s\n", line.lineNum, line.command);
+               System.out.printf("%-5d: %s\n", line.lineNum, line.command);
             }
         });
         Line line = head.next;
+        List<Integer> nums = new ArrayList<>();
         while (line != null) {
-            System.out.printf("%-5d: %s\n", line.lineNum, line.command);
+            if (line.lineNum != null) {
+                nums.add(line.lineNum);
+            }
             line = line.next;
+        }
+        String path = Arrays.stream(nums.toArray())
+            .map(String::valueOf)
+            .collect(Collectors.joining(","));
+        try (PrintWriter out = new PrintWriter("testPath.txt")) {
+            out.println(path);
+        }
+        catch (Exception e) {
+            System.out.println(e.getStackTrace());
         }
     }
 }
