@@ -1,5 +1,3 @@
-package pset3;
-
 import org.apache.bcel.*;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.classfile.LineNumberTable;
@@ -148,7 +146,7 @@ public class GraphGenerator {
         GraphGenerator gg = new GraphGenerator();
 
         System.out.println("------------------------  cfg  ------------------------");
-        CFG cfg = gg.createCFG("pset3.C"); // example invocation of createCFG
+        CFG cfg = gg.createCFG("Demo"); // example invocation of createCFG
 
         //EdgeReporter edgeReporter = new EdgeReporter(cfg.edges);
 //        cfg.addIntEdge(4, 5);

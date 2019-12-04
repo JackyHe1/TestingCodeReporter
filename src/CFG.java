@@ -1,4 +1,3 @@
-package pset3;
 import java.io.PrintWriter;
 import java.util.*;
 
@@ -295,12 +294,12 @@ public class CFG {
     }
 
     public void writeAllPathsToFiles() {
-        writePathsToFile(convertIntListToStringListAndRemoveLastOne(), "nodes.txt");
-        writePathsToFile(edges, "edges.txt");
-        writePathsToFile(edgePairs, "edgePairs.txt");
-        writePathsToFile(simplePaths, "simplePaths.txt");
-        writePathsToFile(primePaths, "primePaths.txt");
-        writePathsToFile(noCompletePaths ? new ArrayList<>() : completePaths, "completePaths.txt");
+        writePathsToFile(convertIntListToStringListAndRemoveLastOne(), "out/nodes.txt");
+        writePathsToFile(edges, "out/edges.txt");
+        writePathsToFile(edgePairs, "out/edgePairs.txt");
+        writePathsToFile(simplePaths, "out/simplePaths.txt");
+        writePathsToFile(primePaths, "out/primePaths.txt");
+        writePathsToFile(noCompletePaths ? new ArrayList<>() : completePaths, "out/completePaths.txt");
     }
 
     public void writePathsToFile(List<String> paths, String filename) {

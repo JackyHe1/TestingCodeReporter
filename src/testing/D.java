@@ -1,4 +1,4 @@
-package pset3;
+package testing;
 
 public class D {
     public static void main(String[] a) {

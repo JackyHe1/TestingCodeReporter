@@ -1,5 +1,3 @@
-package pset3;
-
 public class C {
     int max(int x, int y) {
         int a = 1;
