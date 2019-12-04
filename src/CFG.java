@@ -201,7 +201,6 @@ public class CFG {
                 countMap.put(next, countMap.getOrDefault(next, 0) + 1);
                 if(countMap.get(next) == 3) {  //handle for loop, we can have 4,6 or 454, but not 45454 in complete path to generate other paths
                     noCompletePaths = true;
-                    continue;
                 }
 
                 nodes.offer(next);
